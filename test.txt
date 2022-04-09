@@ -1,0 +1,1 @@
+Var a, bc, cd:Logical;

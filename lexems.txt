@@ -1,0 +1,9 @@
+Var	key_word	1
+a	identifier	1
+,	1	1
+bc	identifier	1
+,	1	1
+cd	identifier	1
+:	2	1
+Logical	key_word::type_definition	1
+;	3	1
