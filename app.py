@@ -20,7 +20,7 @@ lexems = {
   ')': '9::end',
 }
 
-input = open("test.txt", "r")
+input = open("source.txt", "r")
 output = LexemsFile("lexems.txt", "w")
 
 lexical = Lexical(lexems, input, output)
@@ -29,27 +29,31 @@ lexical.analyze()
 input.close()
 output.close()
 
+GLOBAL_IDENTS = []
+
 def A(file):
   lexem, type, nline = file.read_lexem()
 
   if lexem != "Var":
-    raise Exception(f"Expected `Var`, got {lexem} with type {type}", nline)
+    raise Exception(f"Expected `Var`, got `{lexem}` with type `{type}`", nline)
 
 def B(file):
   lexem, type, nline = file.read_lexem()
 
   while type == 'identifier':
+    GLOBAL_IDENTS.append(lexem)
+
     lexem, type, nline = file.read_lexem()
 
     if lexem == ',':
       lexem, type, nline = file.read_lexem()
 
       if type != 'identifier':
-        raise Exception(f"Expected identifier, got {lexem} with type {type}", nline)
+        raise Exception(f"Expected `identifier`, got `{lexem}` with type `{type}`", nline)
     elif lexem == ':':
       break
     else:
-      raise Exception(f"Expected `:` or `,`, got {lexem} with type {type}", nline)
+      raise Exception(f"Expected `:` or `,`, got `{lexem}` with type `{type}`", nline)
 
 def C(file):
   lexem, type, nline = file.read_lexem()
@@ -58,29 +62,60 @@ def C(file):
     lexem, type, nline = file.read_lexem()
 
     if lexem != ';':
-      raise Exception(f"Expected `;`, got {lexem} with type {type}", nline)
+      raise Exception(f"Expected `;`, got `{lexem}` with type `{type}`", nline)
   else:
-    raise Exception(f"Expected lexem with type `key_word::type_definition`, got {lexem} with {type}", nline)
+    raise Exception(f"Expected lexem with type `key_word::type_definition`, got `{lexem}` with `{type}`", nline)
 
 def D(file):
   lexem, type, nline = file.read_lexem()
 
   if lexem != 'Begin':
-    raise Exception(f"Expected `Begin`, got {lexem} with type {type}", nline)
+    raise Exception(f"Expected `Begin`, got `{lexem}` with type `{type}`", nline)
 
-def E(file):
-  pass
+  E(file)
 
 def F(file):
   lexem, type, nline = file.read_lexem()
 
-  if lexem == "End":
+  if lexem == '!':
+    lexem, type, nline = file.read_lexem()
+  
+  if type == 'constant':
     lexem, type, nline = file.read_lexem()
 
-    if lexem != '.':
-      raise Exception(f"Expected `.`, got {lexem} with type {type}", nline)
+    if lexem != ';':
+      raise Exception(f"Expected `constant`, got `{lexem}` with type `{type}`", nline)
   else:
-    raise Exception(f"Expected `End`, got {lexem} with type {type}", nline)
+    raise Exception(f"Expected `constant`, got `{lexem}` with type `{type}`", nline)
+
+def E(file):
+  lexem, type, nline = file.read_lexem()
+
+  while type == 'identifier':
+    if lexem not in GLOBAL_IDENTS:
+      raise Exception(f"Identifier `{lexem}` is not declared", nline)
+
+    lexem, type, nline = file.read_lexem()
+
+    if lexem == ':':
+      lexem, type, nline = file.read_lexem()
+
+      if lexem == '=':
+        F(file)
+        lexem, type, nline = file.read_lexem()
+        pass
+      else:
+        raise Exception(f"Expected `=`, got `{lexem}` with type `{type}`", nline)
+    else:
+      raise Exception(f"Expected `:`, got `{lexem}` with type `{type}`", nline)
+  else:
+    if lexem != "End":
+      raise Exception(f"Expected `End`, got `{lexem}` with type `{type}`", nline)
+    else:
+      lexem, type, nline = file.read_lexem()
+
+      if lexem != '.':
+        raise Exception(f"Expected `.`, got `{lexem}` with type `{type}`", nline)
 
 ll = LinkedList()
 
@@ -88,7 +123,6 @@ ll.add_last(Node(A)) \
   .add_last(Node(B)) \
   .add_last(Node(C)) \
   .add_last(Node(D)) \
-  .add_last(Node(F)) \
 
 lexems_file = LexemsFile("lexems.txt", "r")
 
