@@ -29,16 +29,11 @@ lexical.analyze()
 input.close()
 output.close()
 
-def Root(file):
-  A(file)
-  B(file)
-  C(file)
-
 def A(file):
   lexem, type, nline = file.read_lexem()
 
   if lexem != "Var":
-    raise Exception('unknow lexem', nline)
+    raise Exception(f"Expected `Var`, got {lexem} with type {type}", nline)
 
 def B(file):
   lexem, type, nline = file.read_lexem()
@@ -50,11 +45,11 @@ def B(file):
       lexem, type, nline = file.read_lexem()
 
       if type != 'identifier':
-        raise Exception('asf', nline)
+        raise Exception(f"Expected identifier, got {lexem} with type {type}", nline)
     elif lexem == ':':
       break
     else:
-      raise Exception('gasg', nline)
+      raise Exception(f"Expected `:` or `,`, got {lexem} with type {type}", nline)
 
 def C(file):
   lexem, type, nline = file.read_lexem()
@@ -63,18 +58,37 @@ def C(file):
     lexem, type, nline = file.read_lexem()
 
     if lexem != ';':
-      raise Exception('bla-bla', nline)
+      raise Exception(f"Expected `;`, got {lexem} with type {type}", nline)
   else:
-    raise Exception('bla-bla-2', nline)
+    raise Exception(f"Expected lexem with type `key_word::type_definition`, got {lexem} with {type}", nline)
 
+def D(file):
+  lexem, type, nline = file.read_lexem()
+
+  if lexem != 'Begin':
+    raise Exception(f"Expected `Begin`, got {lexem} with type {type}", nline)
+
+def E(file):
+  pass
+
+def F(file):
+  lexem, type, nline = file.read_lexem()
+
+  if lexem == "End":
+    lexem, type, nline = file.read_lexem()
+
+    if lexem != '.':
+      raise Exception(f"Expected `.`, got {lexem} with type {type}", nline)
+  else:
+    raise Exception(f"Expected `End`, got {lexem} with type {type}", nline)
 
 ll = LinkedList()
 
-# ll.add_last(Node(A)) \
-#   .add_last(Node(B)) \
-#   .add_last(Node(C))
-
-ll.add_last(Node(Root))
+ll.add_last(Node(A)) \
+  .add_last(Node(B)) \
+  .add_last(Node(C)) \
+  .add_last(Node(D)) \
+  .add_last(Node(F)) \
 
 lexems_file = LexemsFile("lexems.txt", "r")
 

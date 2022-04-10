@@ -7,3 +7,6 @@ cd	identifier	1
 :	2	1
 Logical	key_word::type_definition	1
 ;	3	1
+Begin	key_word::start	2
+End	key_word::end	3
+.	8	3

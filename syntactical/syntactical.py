@@ -7,40 +7,12 @@ class Syntactical():
     return self.lexems.readline().split(sep)
 
   def analyze(self):
-    for node in self.syntactical_graph.iterate():
-      node.data(self.lexems)
-
-# try:
-#   lexem, type, nline = self.__read_lexem()
-    
-#   if lexem == "Var":
-#     lexem, type, nline = self.__read_lexem()
-
-#     while type == 'identifier':
-#       lexem, type, nline = self.__read_lexem()
-
-#       if lexem == ',':
-#         lexem, type, nline = self.__read_lexem()
-
-#         if type != 'identifier':
-#           print('error')
-#           break
-
-#         continue
-#       elif lexem == ":":
-#         break
-#       else:
-#         print('error 1')
-      
-#     lexem, type, nline = self.__read_lexem()
-#     if lexem == "Logical":
-#       lexem, type, nline = self.__read_lexem()
-
-#       if lexem == ";":
-#         print('success!')
-#     else:
-#       print('error 2')
-#   else:
-#     print('error! 3')
-# except:
-#   print('end!')
+    try:
+      for node in self.syntactical_graph.iterate():
+        node.data(self.lexems)
+    except ValueError as error:
+      (message, ) = error.args
+      print(f"Error!\nMessage: {message}\nThe file may have ended before all expected lexems have been read")
+    except Exception as error:
+      message, line = error.args
+      print(f"Error!\nMessage: {message}\nAt line: {line}")

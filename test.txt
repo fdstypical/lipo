@@ -1,1 +1,3 @@
 Var a, bc, cd:Logical;
+Begin
+End.
