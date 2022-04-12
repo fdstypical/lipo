@@ -79,14 +79,18 @@ def F(file):
 
   if lexem == '!':
     lexem, type, nline = file.read_lexem()
-  
-  if type == 'constant':
+    G(file, lexem, type, nline)
+  else:
+    G(file, lexem, type, nline)
+
+def G(file, lexem, type, nline):
+  if type not in ['identifier', 'constant']:
+    raise Exception(f"Expected `identifier` or `constant`, got `{lexem}` with type `{type}`", nline)
+  else:
     lexem, type, nline = file.read_lexem()
 
     if lexem != ';':
-      raise Exception(f"Expected `constant`, got `{lexem}` with type `{type}`", nline)
-  else:
-    raise Exception(f"Expected `constant`, got `{lexem}` with type `{type}`", nline)
+      raise Exception(f"Expected `;`, got `{lexem}` with type `{type}`", nline)
 
 def E(file):
   lexem, type, nline = file.read_lexem()

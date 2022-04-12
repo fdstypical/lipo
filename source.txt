@@ -1,6 +1,6 @@
 Var a, bc, cd:Logical;
 Begin
-a := !0;
-bc := 1;
-cd := !101;
+a := 0;
+bc := !a;
+cd := bc;
 End.
