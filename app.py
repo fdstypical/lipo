@@ -13,10 +13,11 @@ lexems = {
   ';': '3',
   '=': '4',
   '&': '5',
-  '|': '6',
-  '!': '7',
-  '.': '8',
-  '(': '9::start',
+  '|': '5',
+  '^': '5',
+  '!': '6',
+  '.': '7',
+  '(': '8::start',
   ')': '9::end',
 }
 
@@ -84,13 +85,16 @@ def F(file):
     G(file, lexem, type, nline)
 
 def G(file, lexem, type, nline):
-  if type not in ['identifier', 'constant']:
-    raise Exception(f"Expected `identifier` or `constant`, got `{lexem}` with type `{type}`", nline)
-  else:
+  if lexem == '(':
+    F(file)
+
     lexem, type, nline = file.read_lexem()
 
-    if lexem != ';':
-      raise Exception(f"Expected `;`, got `{lexem}` with type `{type}`", nline)
+    if lexem != ')':
+      raise Exception(f"Excpected `)`, got `{lexem}` with type `{type}`", nline)
+
+  elif type not in ['identifier', 'constant']:
+    raise Exception(f"Expected `identifier` or `constant`, got `{lexem}` with type `{type}`", nline)
 
 def E(file):
   lexem, type, nline = file.read_lexem()
@@ -106,6 +110,12 @@ def E(file):
 
       if lexem == '=':
         F(file)
+
+        lexem, type, nline = file.read_lexem()
+
+        if lexem != ';':
+          raise Exception(f"Expected `;`, got `{lexem}` with type `{type}`", nline)
+
         lexem, type, nline = file.read_lexem()
         pass
       else:
