@@ -11,10 +11,6 @@ Begin	key_word::start	2
 a	identifier	3
 :	2	3
 =	4	3
-!	6	3
-(	8::start	3
-0	constant	3
-)	9::end	3
-;	3	3
+1	constant	3
 End	key_word::end	4
 .	7	4
