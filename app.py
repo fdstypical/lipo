@@ -92,10 +92,25 @@ def G(file, lexem, type, nline):
 
     if lexem != ')':
       raise Exception(f"Excpected `)`, got `{lexem}` with type `{type}`", nline)
-
+    else:
+      lexem, type, nline = file.read_lexem()
+      
+      if type == '5':
+        F(file)
+      elif lexem == ')':
+        file.back_last()
+      elif lexem != ';':
+        raise Exception(f"Expected `;`, got `{lexem} with type `{type}``", nline)
   else:
     if type in ['identifier', 'constant']:
-      pass
+      lexem, type, nline = file.read_lexem()
+
+      if type == '5':
+        F(file)
+      elif lexem == ')':
+        file.back_last()
+      elif lexem != ';':
+        raise Exception(f"Expected `;`, got `{lexem} with type `{type}``", nline)
     else:
       raise Exception(f"Expected `identifier` or `constant`, got `{lexem}` with type `{type}`", nline)
 
