@@ -3,9 +3,6 @@ class Syntactical():
     self.lexems = lexems_file
     self.syntactical_graph = syntactical_graph
 
-  def __read_lexem(self, sep = "\t"):
-    return self.lexems.readline().split(sep)
-
   def analyze(self):
     try:
       for node in self.syntactical_graph.iterate():

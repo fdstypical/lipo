@@ -41,12 +41,11 @@ def A(file):
 def B(file):
   lexem, type, nline = file.read_lexem()
 
-  while type == 'identifier':
+  while type == 'identifier': # todo: use type == '1' in condition
     GLOBAL_IDENTS.append(lexem)
-
     lexem, type, nline = file.read_lexem()
 
-    if lexem == ',':
+    if type == '1':
       lexem, type, nline = file.read_lexem()
 
       if type != 'identifier':
