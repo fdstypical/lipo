@@ -1,5 +1,6 @@
 from lexical.lexical import Lexical
 from syntactical.syntactical import Syntactical
+from postfix.PostfixNotation import PostfixNotation
 from general.models import Node, LinkedList
 from general.LexemsFile import LexemsFile
 from general.rules import A, B, C, D
@@ -22,25 +23,36 @@ lexems = {
   ')': '8::end',
 }
 
-input = open("source.txt", "r")
-output = LexemsFile("lexems.txt", "w")
+if __name__ == '__main__':
+  input = open("source1.txt", "r")
+  output = LexemsFile("lexems.txt", "w")
 
-lexical = Lexical(lexems, input, output)
-lexical.analyze()
+  lexical = Lexical(lexems, input, output)
+  lexical.analyze()
 
-input.close()
-output.close()
+  input.close()
+  output.close()
 
-ll = LinkedList()
+  ll = LinkedList()
 
-ll.add_last(Node(A)) \
-  .add_last(Node(B)) \
-  .add_last(Node(C)) \
-  .add_last(Node(D)) \
+  ll.add_last(Node(A)) \
+    .add_last(Node(B)) \
+    .add_last(Node(C)) \
+    .add_last(Node(D)) \
 
-lexems_file = LexemsFile("lexems.txt", "r")
+  lexems_file = LexemsFile("lexems.txt", "r")
 
-syntactical = Syntactical(lexems_file, ll)
-syntactical.analyze()
+  syntactical = Syntactical(lexems_file, ll)
+  syntactical.analyze()
 
-lexems_file.close()
+  lexems_file.close()
+
+  lexems_file = LexemsFile("lexems.txt", "r")
+  postfix_file = open("postfix.txt", "w")
+
+  postfix = PostfixNotation(lexems_file, postfix_file)
+  postfix.analyze()
+
+  lexems_file.close()
+  postfix_file.close()
+  

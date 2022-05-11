@@ -1,0 +1,6 @@
+Var a, b, c:Logical;
+Begin
+a := 1 & ((0 | 1 ^ 1) & 1 | 0) ^ 0;
+b := 0 | 1;
+c := b & a ^ 0;
+End.
