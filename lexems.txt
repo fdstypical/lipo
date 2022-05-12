@@ -4,6 +4,8 @@ a	identifier	1
 b	identifier	1
 ,	1	1
 c	identifier	1
+,	1	1
+d	identifier	1
 :	2	1
 Logical	key_word::type_definition	1
 ;	3	1
@@ -58,5 +60,12 @@ b	identifier	5
 &	5	5
 d	identifier	5
 ;	3	5
-End	key_word::end	6
-.	7	6
+d	identifier	6
+:	2	6
+=	4	6
+1	constant	6
+|	5	6
+0	constant	6
+;	3	6
+End	key_word::end	7
+.	7	7
