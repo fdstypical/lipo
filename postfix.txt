@@ -1,0 +1,6 @@
+a b c d e Logical
+ab!c0&1|d&1|0&&=
+b10|a!1^&=
+cb!0^1d&|=
+d10|=
+ed!0|c&=

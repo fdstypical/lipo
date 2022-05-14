@@ -1,6 +1,7 @@
 class PostfixNotation:
   priorities = {
-    # '!': 1,
+    '=': 0,
+    '!': 1,
     '|': 2,
     '^': 3,
     '&': 4,
@@ -9,79 +10,84 @@ class PostfixNotation:
   def __init__(self, lexems_file, postfix_file):
     self.lexems_file = lexems_file
     self.postfix_file = postfix_file
-    self.find_expression = False
+    self.exp_finded = False
     self.stack = []
-    self.results = []
-    self.current_expression = ''
 
+  def __find_idents(self):
+    while True:
+      lexem, type = self.lexems_file.read_lexem()[:2]
+
+      if type == 'identifier':
+        self.postfix_file.write(f"{lexem} ")
+
+      if type == 'key_word::type_definition':
+        self.postfix_file.write(f"{lexem}\n")
+        break
+  
   def __find_expressions(self):
     while True:
       lexem, type = self.lexems_file.read_lexem()[:2]
 
-      if type == '2':
-        lexem, type = self.lexems_file.read_lexem()[:2]
-
-        if type == '4':
-          lexem, type = self.lexems_file.read_lexem()[:2]
-          self.find_expression = True
-      
-      if self.find_expression and type == '3':
-        self.find_expression = False
-        yield ('end', 'expression::end')
-
-      if self.find_expression:
-        yield (lexem, type)
+      if type == 'identifier':
+        self.exp_finded = True
 
       if type == 'key_word::end':
+        self.exp_finded = False
         break
+
+      if self.exp_finded and type == '3':
+        self.__erase()
+
+      if self.exp_finded:
+        self.__postfix(lexem, type)
+  
+  def __pop_brackets(self):
+    while True:
+      lex = self.stack.pop()
+
+      if lex == '(':
+        break
+
+      self.postfix_file.write(f"{lex}")
+
+  def __check_stack(self, lexem):
+    last = self.stack[-1]
+
+    if last == '!':
+      self.postfix_file.write(f"{last}")
+      self.stack.pop()
+    elif last == ':':
+      return
+    elif last not in ['(', ')'] and lexem not in ['(', ')'] and self.priorities[last] > self.priorities[lexem]:
+      self.postfix_file.write(f"{last}")
+      self.stack.pop()
 
   def __erase(self):
     for lexem in reversed(self.stack):
-      self.current_expression += lexem
+      self.postfix_file.write(f"{lexem}")
     
     self.stack = []
-    self.results.append(self.current_expression)
-    self.current_expression = ''
+    self.exp_finded = False
+    self.postfix_file.write('\n')
 
-  def __process(self, lexem, type):
+  def __postfix(self, lexem, type):
     if type in ['constant', 'identifier']:
-      self.current_expression += lexem
+      self.postfix_file.write(f"{lexem}")
     else:
-      if lexem == ')':
-        while True:
-          lex = self.stack.pop()
-
-          if lex == '(':
-            return
-
-          self.current_expression += lex
+      if type == '8::end':
+        self.__pop_brackets()
+        return
 
       if len(self.stack) > 0:
-        last = self.stack[-1]
+        self.__check_stack(lexem)
 
-        if last == '!':
-          self.current_expression += last
-          self.stack.pop()
-        elif last not in ['(', ')'] and lexem not in ['(', ')'] and self.priorities[last] > self.priorities[lexem]:
-          self.current_expression += last
-          self.stack.pop()
-          self.stack.append(lexem)
-          return
-
-      self.stack.append(lexem)
-
+      if type != '2':
+        self.stack.append(lexem)
 
   def analyze(self):
-    for (lexem, type) in self.__find_expressions():
-      if lexem == 'end' and type == 'expression::end':
-        self.__erase()
-        continue
+    self.__find_idents()
+    self.__find_expressions()
 
-      self.__process(lexem, type)
-    print(self.results)
 
-    print('Tests: ------')
-    print(self.results[0] == 'b!c0&1|d&1|0&&')
-    print(self.results[1] == '10|a!1^&')
-    print(self.results[2] == 'b!0^1d&|')
-    
+# a := !b & ((c & 0 | 1) & d | 1) & 0;
+# b := (1 | 0) & (!a ^ 1);

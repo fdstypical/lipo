@@ -24,7 +24,7 @@ lexems = {
 }
 
 if __name__ == '__main__':
-  input = open("source1.txt", "r")
+  input = open("source.txt", "r")
   output = LexemsFile("lexems.txt", "w")
 
   lexical = Lexical(lexems, input, output)
