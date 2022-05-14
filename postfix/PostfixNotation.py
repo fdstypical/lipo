@@ -56,8 +56,6 @@ class PostfixNotation:
     if last == '!':
       self.postfix_file.write(f"{last}")
       self.stack.pop()
-    elif last == ':':
-      return
     elif last not in ['(', ')'] and lexem not in ['(', ')'] and self.priorities[last] > self.priorities[lexem]:
       self.postfix_file.write(f"{last}")
       self.stack.pop()
@@ -87,7 +85,3 @@ class PostfixNotation:
   def analyze(self):
     self.__find_idents()
     self.__find_expressions()
-
-
-# a := !b & ((c & 0 | 1) & d | 1) & 0;
-# b := (1 | 0) & (!a ^ 1);
