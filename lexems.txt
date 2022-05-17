@@ -21,9 +21,12 @@ a	identifier	3
 b	identifier	3
 &	5	3
 (	8::start	3
+c	identifier	3
+&	5	3
 (	8::start	3
 c	identifier	3
 &	5	3
+!	6	3
 0	constant	3
 |	5	3
 1	constant	3
@@ -67,9 +70,12 @@ d	identifier	5
 d	identifier	6
 :	2	6
 =	4	6
+0	constant	6
+&	5	6
+!	6	6
 1	constant	6
 |	5	6
-0	constant	6
+b	identifier	6
 ;	3	6
 e	identifier	7
 :	2	7

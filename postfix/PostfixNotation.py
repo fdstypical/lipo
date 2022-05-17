@@ -56,8 +56,9 @@ class PostfixNotation:
     if last == '!':
       self.postfix_file.write(f"{last}")
       self.stack.pop()
+      last = self.stack[-1]
 
-    while last not in ['(', ')'] and lexem not in ['(', ')'] and self.priorities[last] > self.priorities[lexem]:
+    while last not in ['(', ')', '!'] and lexem not in ['(', ')', '!'] and self.priorities[last] > self.priorities[lexem]:
       self.postfix_file.write(f"{last}")
       self.stack.pop()
       last = self.stack[-1]

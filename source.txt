@@ -1,9 +1,9 @@
 Var a, b, c, d, e, f:Logical;
 Begin
-a := !b & ((c & 0 | 1) & d | 1) & 0;
+a := !b & (c & (c & !0 | 1) & d | 1) & 0;
 b := (1 | 0) & (!a ^ 1);
 c := !b ^ 0 | 1 & d;
-d := 1 | 0;
+d := 0 & !1 | b;
 e := (!d | 0) & c;
 f := a & b & c & d | e;
 End.
