@@ -1,6 +1,7 @@
 from lexical.lexical import Lexical
 from syntactical.syntactical import Syntactical
 from postfix.PostfixNotation import PostfixNotation
+from CodeGenarator import CodeGenerator
 from general.models import Node, LinkedList
 from general.LexemsFile import LexemsFile
 from general.rules import A, B, C, D
@@ -55,4 +56,13 @@ if __name__ == '__main__':
 
   lexems_file.close()
   postfix_file.close()
+
+  postfix_file = open('postfix.txt', 'r')
+  result_file = open('result.txt', 'w')
+
+  code_gen = CodeGenerator(postfix_file, result_file, lexems)
+  code_gen.run()
+
+  postfix_file.close()
+  result_file.close()
   

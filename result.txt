@@ -1,0 +1,66 @@
+LOAD b
+NOT
+LOAD c
+LOAD c
+LIT 0
+NOT
+AND
+LIT 1
+OR
+LOAD d
+AND
+AND
+LIT 1
+OR
+LIT 0
+AND
+AND
+STO a
+------
+LIT 1
+LIT 0
+OR
+LOAD a
+NOT
+LIT 1
+XOR
+AND
+STO b
+------
+LOAD b
+NOT
+LIT 0
+XOR
+LIT 1
+LOAD d
+AND
+OR
+STO c
+------
+LIT 0
+LIT 1
+NOT
+AND
+LOAD b
+OR
+STO d
+------
+LOAD d
+NOT
+LIT 0
+OR
+LOAD c
+AND
+STO e
+------
+LOAD a
+LOAD b
+LOAD c
+LOAD d
+AND
+AND
+AND
+LOAD e
+OR
+STO f
+------
