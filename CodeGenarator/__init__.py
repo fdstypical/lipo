@@ -45,6 +45,5 @@ class CodeGenerator:
     while line := self.postfix_file.readline():
       if self.first_line:
         self.__expression(line)
-        self.result_file.write('------\n')
 
       self.first_line = True

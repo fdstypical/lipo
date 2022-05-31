@@ -16,7 +16,6 @@ LIT 0
 AND
 AND
 STO a
-------
 LIT 1
 LIT 0
 OR
@@ -26,7 +25,6 @@ LIT 1
 XOR
 AND
 STO b
-------
 LOAD b
 NOT
 LIT 0
@@ -36,7 +34,6 @@ LOAD d
 AND
 OR
 STO c
-------
 LIT 0
 LIT 1
 NOT
@@ -44,7 +41,6 @@ AND
 LOAD b
 OR
 STO d
-------
 LOAD d
 NOT
 LIT 0
@@ -52,7 +48,6 @@ OR
 LOAD c
 AND
 STO e
-------
 LOAD a
 LOAD b
 LOAD c
@@ -63,4 +58,3 @@ AND
 LOAD e
 OR
 STO f
-------
